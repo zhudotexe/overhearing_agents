@@ -1,0 +1,6 @@
+# This file contains assignments of annotator usernames to lists of experiment IDs to annotate.
+# See experiments.yaml for a list of valid experiment IDs.
+
+# username:
+#   - session-id-1
+#   - session-id-2

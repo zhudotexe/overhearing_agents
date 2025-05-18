@@ -1,0 +1,19 @@
+-e .
+
+kani-ext-realtime[audio] @ git+https://github.com/zhudotexe/kani-ext-realtime.git@main
+# -e ../kani-ext-realtime
+
+# experiments
+filelock
+openai-whisper
+yt-dlp
+
+# data analysis
+matplotlib
+seaborn
+pandas
+
+# dev
+black
+datamodel-code-generator
+isort

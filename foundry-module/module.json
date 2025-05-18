@@ -1,0 +1,7 @@
+{
+  "id": "pa",
+  "title": "Passive Agents",
+  "description": "",
+  "version": "1.0.0",
+  "scripts": ["scripts/main.js"]
+}

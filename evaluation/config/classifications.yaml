@@ -1,0 +1,164 @@
+# This file contains the definitions of why a given suggestion is appropriate or not.
+# Each label is of the form:
+# key: machine readable str
+# label: human readable str
+# score: int
+# sublabels?: list[label]
+# examples?: list[str]
+# mutex?: list[str]
+
+- key: appropriate
+  label: "\U0001F44D \U0001F44D Helpful in context"
+  score: 2
+  sublabels:
+    - key: explicit-entity
+      label: "The suggested entity is explicitly mentioned in the audio"
+      examples:
+        - "What does Augury do again? (Spell: Augury)"
+        - "Ser Gordon walks into the room. (Add NPC to Stage)"
+        - 'And Ser Gordon says, "How are you, adventurers?" (NPC Speech)'
+    #      mutex: [ implicit-entity ]
+    #
+    #    - key: implicit-entity
+    #      label: "No entity mentioned, but inferred"
+    #      examples:
+    #        - "I have this thing that lets me add +5 to rolls. (Class Feature: Flash of Genius)"
+    #        - "(after a long conversation) And he heads out. (Remove NPC from Stage)"
+    #        - '(speaking in character as an NPC) "Ho! I will have an ale." (NPC Speech)'
+    #      mutex: [ explicit-entity ]
+
+    - key: explicit-aid
+      label: "There is an explicit request for aid"
+      examples:
+        - "What does that do again? (Spell: Augury)"
+        - "Let's show him on screen. (Add NPC to Stage)"
+        - "Um, I need to think of an NPC. (Suggest NPC)"
+    #      mutex: [ implicit-aid ]
+    #
+    #    - key: implicit-aid
+    #      label: "No explicit request for aid, but inferred"
+    #      examples:
+    #        - "Okay, I'll cast Augury. (Spell: Augury)"
+    #        - "Ser Gordon walks into the room. (Add NPC to Stage)"
+    #        - "Players: Who do I find? DM: Umm... (Suggest NPC)"
+    #      mutex: [ explicit-aid ]
+
+- key: mostly-appropriate
+  label: "\U0001F44D More helpful than not in context, but some errors"
+  score: 1
+  sublabels:
+    - key: explicit-entity
+      label: "The suggested entity is explicitly mentioned in the audio"
+      examples:
+        - "What does Augury do again? (Spell: Augury)"
+        - "Ser Gordon walks into the room. (Add NPC to Stage)"
+        - 'And Ser Gordon says, "How are you, adventurers?" (NPC Speech)'
+
+    - key: explicit-aid
+      label: "There is an explicit request for aid"
+      examples:
+        - "What does that do again? (Spell: Augury)"
+        - "Let's show him on screen. (Add NPC to Stage)"
+        - "Um, I need to think of an NPC. (Suggest NPC)"
+
+    - key: slightly-wrong
+      label: "The suggested entity is relevant, but some of the details are slightly wrong or there is a better suggestion (please note in comments)"
+      examples:
+        - "Typo in NPC speech, or slight mismatch to DM narration that doesn't affect the meaning of the speech"
+        - "An improvised NPC is suggested, but the suggested race/class/background mismatches the narration"
+        - "How can I heal a Steel Defender? (Monster: Steel Defender -- cf. Class Feature: Steel Defender)"
+
+- key: mostly-inappropriate
+  label: "\U0001F44E Could be helpful in context, but more unhelpful than helpful; major errors"
+  score: -1
+  sublabels:
+    - key: improper-match
+      label: "The name of the suggested entity is mentioned in the audio, but not as a reference to the entity"
+      examples:
+        - "The shield costs 15 gold. (Item: Gold)"
+        - "How many friends does she have? (Spell: Friends)"
+        - "Triton walks into the room. (Race: Triton)"
+
+    - key: relevant-but-unnecessary
+      label: "The suggested entity is relevant, but unnecessary for the DM to reference in detail in context"
+      examples:
+        - "You meet a cleric of the order. (Class: Cleric)"
+        - "On her shield, you see a flower. (Item: Shield)"
+        - "Hey, do you have Fireball prepared? (Spell: Fireball)"
+        - "My Triceratops will move over there. (Monster: Triceratops)"
+
+    - key: slightly-wrong-bad
+      label: "The suggested entity is relevant, but some of the details are slightly wrong or there is a better suggestion (please note in comments)"
+      examples:
+        - "Typo in NPC speech, or slight mismatch to DM narration that significantly affects the meaning of the speech"
+        - "An improvised NPC is suggested, but the DM is referencing an actual NPC in the game"
+
+- key: inappropriate
+  label: "\U0001F44E \U0001F44E Not helpful in context, or an error"
+  score: -2
+  sublabels:
+    - key: improper-match
+      label: "The name of the suggested entity is mentioned in the audio, but not as a reference to the entity"
+      examples:
+        - "The shield costs 15 gold. (Item: Gold)"
+        - "How many friends does she have? (Spell: Friends)"
+        - "Triton walks into the room. (Race: Triton)"
+
+    - key: incorrect-entity
+      label: "Some entity is explicitly mentioned in the audio, but is resolved incorrectly"
+      examples:
+        - "What does Augury do again? (Spell: Divination)"
+        - "Ser Gordon walks into the room. (Add NPC to Stage: Akita)"
+        - 'And Ser Gordon says, "How are you, adventurers?" (Different NPC Speech)'
+        - "I cast Shield! (Item: Shield)"
+      #      mutex: [ implicit-entity ]
+      #
+      #    - key: implicit-entity
+      #      label: "No entity mentioned, but one was inferred incorrectly"
+      #      examples:
+      #        - "I have this thing that lets me add +5 to rolls. (Race: Goliath)"
+      #        - "(after a long conversation) And he heads out. (Remove NPC from Stage)"
+      #        - '(speaking in character as an NPC) "Ho! I will have an ale." (NPC Speech)'
+      #      mutex: [ explicit-entity ]
+
+    - key: npc-never-appears
+      label: "The suggested NPC never appears in this session (please check player notes to make sure!)"
+      examples:
+        - "Show NPC: The Dread Emperor Seifer (before his introduction)"
+        - "NPC Speech: Hanabiko K'lcetta (before her introduction in S23)"
+
+    - key: npc-action-reversed
+      label: "The suggested NPC is being added/removed from stage when the opposite should be true"
+      examples:
+        - "Ser Gordon heads out after finishing his breakfast. (Add NPC to Stage: Ser Gordon)"
+
+    - key: not-dm-narration
+      label: "The model is suggesting NPC narration for player speech or out-of-character chatter."
+      examples:
+        - "Player: We're supposed to meet with the king, right? (Add NPC to Stage: King Remus)"
+        - 'Player: "How are you?" (NPC Speech: How are you?)'
+
+    - key: no-aid-needed
+      label: "No plausible need for aid -- the suggestion could not possibly be grounded in the context"
+      examples:
+        - "<silence>"
+        - "Do you see any spare forks?"
+        - "Oh, I'll be in Florida next week."
+      #      mutex: [ implicit-aid, explicit-aid ]
+      #
+      #    - key: implicit-aid
+      #      label: "No explicit request for aid, but plausible, resolved incorrectly"
+      #      examples:
+      #        - "Okay, I'll cast Augury. (Spell: Augury)"
+      #        - "Ser Gordon walks into the room. (Add NPC to Stage)"
+      #        - "Players: Who do I find? DM: Umm... (Suggest NPC)"
+      #      mutex: [ no-aid-needed, explicit-aid ]
+      #
+      #    - key: explicit-aid
+      #      label: "Explicit request for aid, resolved incorrectly"
+      #      examples:
+      #        - "What does that do again? (Spell: Augury)"
+      #        - "Let's show him on screen. (Add NPC to Stage)"
+      #        - "Um, I need to think of an NPC. (Suggest NPC)"
+      #      mutex: [ no-aid-needed, implicit-aid ]
+

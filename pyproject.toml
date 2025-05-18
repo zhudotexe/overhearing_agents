@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "overhearing_agents"
+version = "0.0.1"
+authors = [
+    { name = "Andrew Zhu", email = "andrew@zhu.codes" },
+]
+description = "Much work has been done on conversational LLM agents which directly assist human users with tasks. We present an alternative paradigm of interacting with LLM agents, which we call overhearing agents. Overhearing agents do not actively participate in conversation---instead, they ``listen in'' to human-human conversations and perform background actions or provide suggestions to assist the user. In this work, we explore the overhearing agents paradigm through the lens of Dungeons & Dragons gameplay. We present an in-depth study using large multimodal audio-language models as overhearing agents to assist a Dungeon Master. We perform a human evaluation to examine the helpfulness of such agents and find that some large audio-language models have the emergent ability to use implicit audio cues to perform the overhearing task."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    # https://pypi.org/classifiers/
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "aiofiles>=22.1.0",
+    "fastapi>=0.110.0,<1.0.0",
+    "httpx>=0.23.0,<1.0.0",
+    "kani[openai]>=1.1.0,<2.0.0",
+    "kani-ratelimits",
+    "numpy>=1.0.0,<3.0.0",
+    "pydantic>=2.0.0,<3.0.0",
+    "rapidfuzz>=3.0.0,<4.0.0",
+    "uvicorn>=0.23.2,<1.0.0",
+    "websockets>=11.0.3",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/zhudotexe/overhearing_agents"
+"Bug Tracker" = "https://github.com/zhudotexe/overhearing_agents/issues"
+
+[tool.black]
+line-length = 120
+preview = true
+unstable = true
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+line_length = 120
+# I am bound by pycharm's import autosorting rules
+no_lines_before = "LOCALFOLDER"
+reverse_relative = true
+combine_as_imports = true
+order_by_type = false
+case_sensitive = true
